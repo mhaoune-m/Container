@@ -1,0 +1,47 @@
+version: '3.7'
+services:
+  #Nginx Service
+ 
+  figaro1:
+    image: nginx:alpine
+    container_name: figaro-1
+    restart: unless-stopped
+    tty: true
+    expose:
+      - "80"
+    networks:
+      - traefik
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.backend=figaro1"
+      - "traefik.frontend.rule=Host:figaro.localhost"
+      - "traefik.port=80"    
+    volumes:
+      - ./indexF1.html:/usr/share/nginx/html/index.html
+
+  gorafi1:
+    image: nginx:alpine
+    container_name: gorafi
+    restart: unless-stopped
+    tty: true
+    expose:
+      - "80"
+    networks:
+      - traefik
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.backend=gorafi"
+      - "traefik.frontend.rule=Host:gorafi.localhost"
+      - "traefik.port=80"    
+    volumes:
+      - ./indexF2.html:/usr/share/nginx/html/index.html  
+ 
+
+  
+ 
+    
+#Docker Networks
+networks:
+  traefik:
+    external: 
+      name: traefik_webgateway
